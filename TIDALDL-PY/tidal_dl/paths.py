@@ -181,7 +181,11 @@ def __getHomePath__():
     if "XDG_CONFIG_HOME" in os.environ:
         return os.environ['XDG_CONFIG_HOME']
     elif "HOME" in os.environ:
-        return os.environ['HOME']
+        if os.uname().sysname == 'Darwin':
+            # This could also be + '/Library/Preferences/dl.tidal/' or similar
+            return os.path.join(os.environ['HOME'], ".config", "tidal-dl")
+        else:
+            return os.environ['HOME']
     elif "HOMEDRIVE" in os.environ and "HOMEPATH" in os.environ:
         return os.environ['HOMEDRIVE'] + os.environ['HOMEPATH']
     else:
